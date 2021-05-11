@@ -3,11 +3,11 @@ from flask import Blueprint
 from flask import session
 import pyotp
 import qrcode
-import qrcode.image.svg
+# import qrcode.image.svg
 from io import BytesIO
 import base64
 
-from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
 
 from flask_mongoengine import MongoEngine
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
@@ -17,10 +17,10 @@ from werkzeug.utils import secure_filename
 # stdlib
 from datetime import datetime
 
-from flask_app import app, bcrypt, client
-from flask_app.forms import (PlayerReviewForm, RegistrationForm, LoginForm, UpdateUsernameForm)
-from flask_app.models import User, Review, load_user
-from flask_app.utils import current_time
+from .. import app, bcrypt, client
+from ..forms import (PlayerReviewForm, RegistrationForm, LoginForm, UpdateUsernameForm)
+from ..models import User, Review, load_user
+from ..utils import current_time
 
 users = Blueprint('users', __name__)
 
