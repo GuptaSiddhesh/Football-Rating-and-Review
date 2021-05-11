@@ -68,8 +68,6 @@ class LoginForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired(), Length(min=1, max=40)])
     password = PasswordField('Password', validators=[InputRequired()])
 
-    token = StringField('Token', validators=[InputRequired(), Length(min=6, max=6)])
-
     submit = SubmitField('Login')
 
     def validate_username(self, username):
@@ -77,18 +75,6 @@ class LoginForm(FlaskForm):
         if user is None:
             raise ValidationError('Login failed. Check your username and/or password')
 
-    # Validate password?
-
-    def validate_token(self, token):
-        user = User.objects(username=self.username.data).first()
-        if user is not None:
-            tok_verified = pyotp.TOTP(user.otp_secret).verify(token.data)
-            if not tok_verified:
-                raise ValidationError('Invalid Token')
-            else:
-                print('success tho')
-        else:
-            raise ValidationError('Token User Error')
 
 
 class UpdateUsernameForm(FlaskForm):

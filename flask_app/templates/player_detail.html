@@ -9,136 +9,109 @@
 {% if player %}
 
 {# Display card for the player details #}
-<div class="row">
+<div class="card-header">
+  <h2>{{ player.fullname }} ({{ player.cteam }} #{{player.jnum}})</h2>
+
+</div>
+<p>
+<div class="row" style="margin-bottom: 60px;">
+  <div class="col-sm-3">
+    <div class="pricing box-shadow hover-up pricing--best" id="playerOneBox" style="background:#ffffff; border-radius:20px; padding: 40px; border: 4px salmon solid;">
+      <div><b>DOB:</b> {{ player.dob }}</div>
+    </div>
+  </div>
+  <div class="col-sm-3">
+    <div class="pricing box-shadow hover-up pricing--best" id="playerOneBox" style="background:#ffffff; border-radius:20px; padding: 28px; border: 4px salmon solid;">
+      <div><b>Height (Inches), :</b> {{ player.height }}</div>
+      <div><b>Weight (LBs):</b> {{ player.weight }}</div>
+    </div>
+  </div>
+  <div class="col-sm-3">
+    <div class="pricing box-shadow hover-up pricing--best" id="playerOneBox" style="background:#ffffff; border-radius:20px; padding: 40px; border: 4px salmon solid;">
+      <div><b>Position:</b> {{ player.posd}}</div>
+    </div>
+
+  </div>
+  <div class="col-sm-3">
+    <div class="pricing box-shadow hover-up pricing--best" id="playerOneBox" style="background:#ffffff; border-radius:20px; padding: 40px; border: 4px salmon solid;">
+      <div><b>College:</b> {{ player.col }}</div>
+  </div>
+</div>
+
+<p></p>
+
   <div class="col">
     <div class="card text-center">
-      <div class="card-header">
-        {{ player.fullname }} ({{ player.cteam }} #{{player.jnum}})
-      </div>
-      <div class="card-body">
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item"><b>DOB:</b> {{ player.dob }}</li>
-          <li class="list-group-item"><b>Height (Inches):</b> {{ player.height }}</li>
-          <li class="list-group-item"><b>Weight (LBs):</b> {{ player.weight }}</li>
-          <li class="list-group-item"><b>College:</b> {{ player.col }}</li>
-          <li class="list-group-item"><b>Position:</b> {{ player.posd }}</li>
-        </ul>
+      <div class="card-body" style="background:#ffffff; border-radius:20px; padding: 40px; border: 4px salmon solid; margin-top: 50px;">
+        
         {% for i in player.flags %}
           {% if i == 1 %}
-            <div style="overflow-x:auto">
-            <table>
-              <tr>
-                <th>Season</th>
-                <th>Week Number</th>
-                <th>Team</th>
-                <th>Game ID</th>
-                <th>Pass Attempts</th>
-                <th>Completions</th>
-                <th>Pass Yards</th>
-                <th>Interceptions</th>
-                <th>Passing Touchdowns</th>
-                <th>Rushing Attempts</th>
-                <th>Successful Rushing Attempts</th>
-                <th>Rush Yards</th>
-                <th>Rushing Touchdowns</th>
-                <th>Targets</th>
-                <th>Receptions</th>
-                <th>Receiving Yards</th>
-                <th>Receiving Touchdowns</th>
-                <th>Punt/Kickoff Returns</th>
-                <th>Return Yardage</th>
-                <th>Return Touchdowns</th>
-                <th>Fumbles Lost</th>
-                <th>Penalty Yardage</th>
-                <th>Snaps</th>
-                <th>NFL.com Fantasy Points</th>
-                <th>Fan Duel Fantasy Points</th>
-                <th>Draft Kings Fantasy Points</th>
-              </tr>
-              {% for game in player.offense %}
-              <tr>  
-                <td>{{ game.year }}</td>
-                <td>{{ game.game }}</td>
-                <td>{{ game.team }}</td>
-                <td>{{ game.gid }}</td>
-                <td>{{ game.pa }}</td>
-                <td>{{ game.pc }}</td>
-                <td>{{ game.py }}</td>
-                <td>{{ game.ints }}</td>
-                <td>{{ game.tdp }}</td>
-                <td>{{ game.ra }}</td>
-                <td>{{ game.sra }}</td>
-                <td>{{ game.ry }}</td>
-                <td>{{ game.tdr }}</td>
-                <td>{{ game.trg }}</td>
-                <td>{{ game.rec }}</td>
-                <td>{{ game.recy }}</td>
-                <td>{{ game.tdrec }}</td>
-                <td>{{ game.ret }}</td>
-                <td>{{ game.rety }}</td>
-                <td>{{ game.tdret }}</td>
-                <td>{{ game.fuml }}</td>
-                <td>{{ game.peny }}</td>
-                <td>{{ game.snp }}</td>
-                <td>{{ game.fp }}</td>
-                <td>{{ game.fp2 }}</td>
-                <td>{{ game.fp3 }}</td>
-              </tr>
-              {% endfor %}
-            </table>
-            </div>
-          {% endif %}
-          {% if i == 2 %}
-            <div style="overflow-x:auto">
-            <table>
-              <tr>
-                <th>Season</th>
-                <th>Week Number</th>
-                <th>Team</th>
-                <th>Game ID</th>
-                <th>Solo Tackles</th>
-                <th>Combined Tackles</th>
-                <th>Sacks</th>
-                <th>Safeties</th>
-                <th>Blocked Kicks</th>
-                <th>Interceptions</th>
-                <th>Passes Defended</th>
-                <th>Fumble Recoveries</th>
-                <th>Fumbles Forced</th>
-                <th>Defensive Touchdowns</th>
-                <th>Return Yardage</th>
-                <th>Return Touchdowns</th>
-                <th>Penalty Yardage</th>
-                <th>Snaps</th>
-                <th>NFL.com Fantasy Points</th>
-                <th>Fan Duel/Draft Kings Fantasy Points</th>
-              </tr>
-              {% for game in player.defense %}<tr>
-              <tr>  
-                <td>{{ game.year }}</td>
-                <td>{{ game.game }}</td>
-                <td>{{ game.team }}</td>
-                <td>{{ game.gid }}</td>
-                <td>{{ game.solo }}</td>
-                <td>{{ game.comb }}</td>
-                <td>{{ game.sck }}</td>
-                <td>{{ game.saf }}</td>
-                <td>{{ game.blk }}</td>
-                <td>{{ game.ints }}</td>
-                <td>{{ game.pdef }}</td>
-                <td>{{ game.frcv }}</td>
-                <td>{{ game.forc }}</td>
-                <td>{{ game.tdd }}</td>
-                <td>{{ game.rety }}</td>
-                <td>{{ game.tdret }}</td>
-                <td>{{ game.peny }}</td>
-                <td>{{ game.snp }}</td>
-                <td>{{ game.fp }}</td>
-                <td>{{ game.fp2 }}</td>
-              </tr>
-              {% endfor %}
-            </table>
-            </div>
+            {% for game in player.offense %}
+              <div class="row">
+                <h2> Season: {{ game.year }} </h2>
+                <div class="col-sm-4">
+                  <br>
+                  Week Number: {{ game.game }}
+                  <br>
+                  Team: {{ game.team }}
+                  <br>
+                  Game ID: {{ game.gid }}
+                  <br>
+                  Pass Attempts: {{ game.pa }}
+                  <br>
+                  Completions: {{ game.pc }}
+                  <br>
+                  Pass Yards: {{ game.py }}
+                  <br>
+                  Interceptions: {{ game.ints }}
+                  <br>
+                  Passing Touchdowns: {{ game.tdp }}
+                  <br>
+                  Rushing Attempts: {{ game.ra }}
+                  <br>
+                  Successful Rushing Attempts: {{ game.sra }}
+                  <br>
+                  Rush Yards: {{ game.ry }}
+                  <br>
+                  Rushing Touchdowns: {{ game.tdr }}
+                  <br>
+                </div>
+                <p></p>
+                <div class="col-sm-4 ">
+                  Targets: {{ game.trg }}
+                  <br>
+                  Receptions: {{ game.rec }}
+                  <br>
+                  Receiving Yards: {{ game.recy }}
+                  <br>
+                  Receiving Touchdowns: {{ game.tdrec }}
+                  <br>
+                  Punt/Kickoff Returns: {{ game.ret }}
+                  <br>
+                  Return Yardage: {{ game.rety }}
+                  <br>
+                  Return Touchdowns: {{ game.tdret }}
+                  <br>
+                  Fumbles Lost: {{ game.fuml }}
+                  <br>
+                  Penalty Yardage: {{ game.peny }}
+                  <br>
+                  Snaps: {{ game.snp }}
+                  <br>
+                  NFL.com Fantasy Points: {{ game.fp }}
+                  <br>
+                  Fan Duel Fantasy Points: {{ game.fp2 }}
+                  <br>
+                  Draft Kings Fantasy Points: {{ game.fp3 }}
+                  <br>
+                </div>
+
+              </div>
+
+    
+                <hr>
+                <p></p>
+          <!-- {% endfor %} -->
           {% endif %}
           {% if i == 3 %}
             <div style="overflow-x:auto">

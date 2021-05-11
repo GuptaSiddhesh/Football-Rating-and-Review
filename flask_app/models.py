@@ -12,8 +12,6 @@ class User(db.Document, UserMixin):
     username = db.StringField(unique=True, required=True)
     password = db.StringField()
 
-    # For 2FA
-    otp_secret = db.StringField(required=True, min_length=16, max_length=16, default=pyotp.random_base32())
 
     # Returns unique string identifying our object
     def get_id(self):

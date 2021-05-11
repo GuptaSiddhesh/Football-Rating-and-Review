@@ -1,7 +1,14 @@
 {% extends "header.html" %}
 
 {% block content %}
-<div class="row">
+<div class="row" style="padding-top: 10%;">
+    <div class="col">
+        <h2>Welcome To Fantasy Football Statistics!</h2>
+        <p></p>
+        Please select a team name to get detailed information on every player!
+        <p></p>
+        As of now, we have information available for just the Kansas City Chiefs!
+    </div>
     <div class="col">
         <form method="POST" action="">
             {{ form.csrf_token }}
@@ -14,24 +21,8 @@
         </form>
     </div>
 
-    <div class="col">
-        <h2>Welcome! </h2>
-    </div>
+
 </div>
 
-<div class="row">
-    <div class="col">
-        <form method="POST" action="">
-            {{ form2.csrf_token }}
-            <div class="form-group">
-                {{ form2.fname.label }} {{ form2.fname(class="form-control") }}
-                {{ form2.lname.label }} {{ form2.lname(class="form-control") }}
-            </div>
-            {{ form2.submit() }}
-        </form>
-    </div>
-</div>
-
-<img src="{{ url_for('static', filename='NFL Poster.png', width = 600, height = 300)}}" />
 
 {% endblock %}
