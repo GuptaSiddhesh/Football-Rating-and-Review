@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, url_for, flash, Response
 from flask import Blueprint
-from flask_app.forms import (SearchTeamForm, SearchPlayerForm)
-from flask_app.models import User, Review
+from ..forms import (SearchTeamForm, SearchPlayerForm)
+from ..models import User, Review
 
 main = Blueprint("main", __name__)
 
