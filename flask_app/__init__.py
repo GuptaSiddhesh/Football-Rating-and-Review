@@ -1,4 +1,3 @@
-# 3rd-party packages
 from flask import Flask, render_template, request, redirect, url_for
 from flask_talisman import Talisman
 from flask_mongoengine import MongoEngine
@@ -41,9 +40,9 @@ bcrypt = Bcrypt(app)
 
 client = PlayerClient()
 
-from flask_app.main.routes import main  # Blueprint class
-from flask_app.users.routes import users
-from flask_app.football.routes import football
+from .main.routes import main  # Blueprint class
+from .users.routes import users
+from .football.routes import football
 
 app.register_blueprint(main)
 app.register_blueprint(users, url_prefix='/users')
