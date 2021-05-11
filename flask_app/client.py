@@ -116,7 +116,7 @@ class KickerGame(object):
 class PlayerClient(object):
     def __init__(self):
         self.sess = requests.Session()
-        self.base_url = f'https://www.armchairanalysis.com/api/1.0/test'
+        self.base_url = f'https://api.armchairanalysis.com/v1.1/test'
 
     def all_players(self):
         search_url = f'/players?status=active'
@@ -199,7 +199,7 @@ class PlayerClient(object):
         return player
 
     def retrieve_player_by_name(self, player_fname, player_lname):
-        player_url = self.base_url + f'/player/{player_fname}_{player_lname}'
+        player_url = self.base_url + f'/player/:{player_fname}_{player_lname}'
         print(player_fname + player_lname)
         resp = self.sess.get(player_url)
 
