@@ -8,10 +8,10 @@ from flask_login import LoginManager, current_user, login_user, logout_user, log
 # stdlib
 from datetime import datetime
 
-from flask_app import app, bcrypt, client
-from flask_app.forms import (PlayerReviewForm)
-from flask_app.models import User, Review, load_user
-from flask_app.utils import current_time
+from .. import app, bcrypt, client
+from ..forms import (PlayerReviewForm)
+from ..models import User, Review, load_user
+from ..utils import current_time
 
 football = Blueprint('football', __name__)
 
@@ -19,19 +19,20 @@ football = Blueprint('football', __name__)
 @football.route('/team-results/<query>', methods=['GET'])
 def team_results(query):
     print(query)
-    if query=='ALL':
+    if query == 'ALL':
         results = client.all_players()
     else:
         results = client.get_players_by_team(query)
 
     if type(results) == dict:
         return render_template('query.html', error_msg=results['error'])
-    
+
     return render_template('query.html', results=results)
+
 
 @football.route('/player-results/<fname>_<lname>', methods=['GET'])
 def player_results(fname, lname):
-    print(fname+lname)
+    print(fname + lname)
     fullname = fname + lname
     if len(fullname) == 0:
         results = client.all_players()
@@ -44,8 +45,9 @@ def player_results(fname, lname):
 
     if type(results) == dict:
         return render_template('query.html', error_msg=results['error'])
-    
+
     return render_template('query.html', results=results)
+
 
 @football.route('/players/<player_id>', methods=['GET', 'POST'])
 def player_detail(player_id):
@@ -57,10 +59,10 @@ def player_detail(player_id):
     form = PlayerReviewForm()
     if form.validate_on_submit():
         review = Review(
-            commenter=load_user(current_user.username), 
+            commenter=load_user(current_user.username),
             content=form.text.data,
             draftRound=form.draftRound.data,
-            playAgain=form.playAgain.data, 
+            playAgain=form.playAgain.data,
             date=current_time(),
             player_id=player_id,
             player_name=result.fullname
@@ -75,3 +77,4 @@ def player_detail(player_id):
     print(current_user.is_authenticated)
 
     return render_template('player_detail.html', form=form, player=result, reviews=reviews)
+
