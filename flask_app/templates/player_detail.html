@@ -42,8 +42,8 @@
   <div class="col">
       <div class="card-body" style="background:#ffffff; border-radius:20px; padding: 40px; border: 4px salmon solid; margin-top: 50px;">
         
-        {% for i in player.flags %}
-          {% if i == 1 %}
+        
+          {% if player.type == 1 %}
             {% for game in player.offense %}
               <div class="row">
                 <h2> Season: {{ game.year }} </h2>
@@ -109,7 +109,7 @@
                 <p></p>
               {% endfor %}
           {% endif %}
-          {% if i == 2 %}
+          {% if player.type == 2 %}
           {% for game in player.defense %}
           <div class="row">
             <h2> Season: {{ game.year }} </h2>
@@ -165,7 +165,7 @@
             <p></p>
           {% endfor %}
           {% endif %}
-        {% endfor %}
+        
       </div>
     <!-- </div> -->
   </div>

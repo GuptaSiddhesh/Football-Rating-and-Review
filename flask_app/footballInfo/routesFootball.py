@@ -18,7 +18,7 @@ football = Blueprint('football', __name__)
 
 @football.route('/players/<player_id>', methods=['GET', 'POST'])
 def player_detail(player_id):
-    r = client.retrieve_player_by_id(player_id)
+    r = client.getPlayerByID(player_id)
 
     if type(r) == dict:
         return render_template('player_detail.html', error_msg=r['error'])
@@ -50,7 +50,7 @@ def team_results(query):
     if query != 'ALL':
         r =client.get_players_by_team(query)
     else:
-        r =  client.all_players()
+        r =  client.getAll()
 
     if type(r) == dict:
         return render_template('query.html', error_msg=r['error'])

@@ -1,28 +1,33 @@
 import requests
 class PlayerBase(object):
-    def __init__(self, player_json, offense=[], defense=[], kicker=[], flags=[]):
+    def __init__(self, player_json, offense=[], defense=[], kicker=[], type=0):
         self.player_id = player_json['player']
         self.fname = player_json['fname']
         self.lname = player_json['lname']
         self.pname = player_json['pname']
+        self.dpos = player_json['dpos']
+        self.col = player_json['col']
         self.fullname = self.fname + " " + self.lname
         self.pos1 = player_json['pos1']
         self.pos2 = player_json['pos2']
         self.height = player_json['height']
+        self.jnum = player_json['jnum']
         self.weight = player_json['weight']
+        self.dcp = player_json['dcp']
         self.dob = player_json['dob']
-        self.dpos = player_json['dpos']
-        self.col = player_json['col']
+        self.defense = defense
+        self.kicker = kicker
+        self.offense = offense
         self.dv = player_json['dv']
         self.start = player_json['start']
         self.cteam = player_json['cteam']
         self.posd = player_json['posd']
-        self.jnum = player_json['jnum']
-        self.dcp = player_json['dcp']
-        self.offense = offense
-        self.defense = defense
-        self.kicker = kicker
-        self.flags = flags
+        
+        
+        
+        
+        
+        self.type = type
 
     def __repr__(self):
         return self.fullname
@@ -59,8 +64,8 @@ class OffenseGame(object):
         self.year = play_style['year']
         self.team = play_style['team']
 
-    def __repr__(self):
-        return self.gid
+    # def __repr__(self):
+    #     return self.gid
 
 
 class DefenseGame(object):
@@ -92,118 +97,85 @@ class DefenseGame(object):
         return self.gid
 
 
-class KickerGame(object):
-    def __init__(self, play_style):
-        self.player_id = play_style['player']
-        self.gid = play_style['gid']
-        self.pat = play_style['pat']
-        self.fgs = play_style['fgs']
-        self.fgm = play_style['fgm']
-        self.fgl = play_style['fgl']
-        self.fp = play_style['fp']
-        self.game = play_style['game']
-        self.seas = play_style['seas']
-        self.year = play_style['year']
-        self.team = play_style['team']
-
-    def __repr__(self):
-        return self.gid
-
 
 class PlayerClient(object):
     def __init__(self):
-        self.sess = requests.Session()
+        self.session = requests.Session()
         self.base_url = f'https://api.armchairanalysis.com/v1.1/test'
 
-    def all_players(self):
+#This function works to return all the players in the database
+    def getAll(self):
         search_url = f'/players?status=active'
-        resp = self.sess.get(self.base_url + search_url)
+        response = self.session.get(self.base_url + search_url)
 
-        if resp.status_code != 200:
+        if response.status_code != 200:
             return ValueError('URL error')
+        else:
+            data = response.json()
+        d = data['data']
 
-        data = resp.json()
+        allPlayers = []
+        for each in d:
+            allPlayers.append(PlayerBase(each))
 
-        all_players_json = data['data']
+        return allPlayers
 
-        result = []
-
-        for item_json in all_players_json:
-            result.append(PlayerBase(item_json))
-
-        return result
-
+#This function returns player specific to the selected team
     def get_players_by_team(self, tname):
         player_url = self.base_url + f'/players/{tname}'
 
-        resp = self.sess.get(player_url)
+        resp = self.session.get(player_url)
 
         if resp.status_code != 200:
             raise ValueError('Search request failed, make sure proper team name given')
+        else:
+            d = resp.json()
 
-        data = resp.json()
+        all_players_json = d['data']
 
-        all_players_json = data['data']
-
-        result = []
-
+        allPlayers = []
         for item_json in all_players_json:
-            result.append(PlayerBase(item_json))
+            allPlayers.append(PlayerBase(item_json))
 
-        return result
+        return allPlayers
 
-    def retrieve_player_by_id(self, player_id):
-        player_url = self.base_url + f'/player/{player_id}'
+    def getPlayerByID(self, player_id):
+        url = self.base_url + f'/player/{player_id}'
 
-        resp = self.sess.get(player_url)
+        resp = self.session.get(url)
 
         if resp.status_code != 200:
             raise ValueError('Search request failed, make sure proper Player_Id given')
-        data = resp.json()
-        basic = data['data']
 
+
+        basic = resp.json()['data']
         flag = []
-        offense = []
-        defense = []
-        kicker = []
+        style = []
+        if self.session.get(url + f'/offense').status_code == 200:
+           
+            records = self.session.get(url + f'/offense').json()['data']
+            for rec in records:
+                style.append(OffenseGame(rec))
+            player = PlayerBase(basic, offense=style, defense=[], kicker=[], type=1)
+            return player
 
-        offense_url = player_url + f'/offense'
-        resp = self.sess.get(offense_url)
-        if resp.status_code == 200:
-            flag.append(1)
-            games_json = resp.json()['data']
-            for game_json in games_json:
-                offense.append(OffenseGame(game_json))
+        elif self.session.get(url + f'/defense').status_code == 200:
+            records = self.session.get(url + f'/defense').json()['data']
+            for rec in records:
+                style.append(DefenseGame(rec))
 
-        defense_url = player_url + f'/defense'
-        resp = self.sess.get(defense_url)
-        if resp.status_code == 200:
-            flag.append(2)
-            games_json = resp.json()['data']
-            for game_json in games_json:
-                defense.append(DefenseGame(game_json))
+            
+            player = PlayerBase(basic, offense=[], defense=style, kicker=[], type=2)
+            return player
+        
+        elif self.session.get(url).status_code == 200:
+            records = self.session.get(url).json()['data']
 
-        kicker_url = player_url + f'/kickers'
-        resp = self.sess.get(kicker_url)
-        if resp.status_code == 200:
-            flag.append(3)
-            games_json = resp.json()['data']
-            for game_json in games_json:
-                kicker.append(KickerGame(game_json))
+            
+            player = PlayerBase(basic, offense=[], defense=[], kicker=style, type=3)
+            return player
 
-        player = PlayerBase(basic, offense=offense, defense=defense, kicker=kicker, flags=flag)
-        return player
+        
 
-    def retrieve_player_by_name(self, player_fname, player_lname):
-        player_url = self.base_url + f'/player/:{player_fname}_{player_lname}'
-        print(player_fname + player_lname)
-        resp = self.sess.get(player_url)
-
-        if resp.status_code != 200:
-            # raise ValueError('Search request failed, make sure proper Player Name given')
-            return resp.json()
-        data = resp.json()
-        basic = data['data'][0]
-        return basic['player']
 
 
