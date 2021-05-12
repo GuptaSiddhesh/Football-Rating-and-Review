@@ -18,8 +18,8 @@ from werkzeug.utils import secure_filename
 from datetime import datetime
 
 from .. import app, bcrypt, client
-from ..forms import (PlayerReviewForm, RegistrationForm, LoginForm, UpdateUsernameForm)
-from ..models import User, Review, load_user
+from ..forms import (PlayerCommentForm, RegistrationForm, LoginForm, UpdateUsernameForm)
+from ..models import User, Comments, load_user
 from ..utils import current_time
 
 users = Blueprint('users', __name__)
@@ -44,40 +44,40 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 
-@users.route('/qr_code')
-def qr_code():
-    if 'new_username' not in session:
-        return redirect(url_for('main.index'))
+# @users.route('/qr_code')
+# def qr_code():
+#     if 'new_username' not in session:
+#         return redirect(url_for('main.index'))
 
-    #user = User.query.filter_by(username=session['new_username']).first()
-    user = User.objects(username = session['new_username']).first()
-    session.pop('new_username')
+#     #user = User.query.filter_by(username=session['new_username']).first()
+#     user = User.objects(username = session['new_username']).first()
+#     session.pop('new_username')
 
-    uri = pyotp.totp.TOTP(user.otp_secret).provisioning_uri(name=user.username, issuer_name='Fantasy-Football')
-    img = qrcode.make(uri, image_factory= qrcode.image.svg.SvgPathImage)
-    stream = BytesIO()
-    img.save(stream)
+#     uri = pyotp.totp.TOTP(user.otp_secret).provisioning_uri(name=user.username, issuer_name='Fantasy-Football')
+#     img = qrcode.make(uri, image_factory= qrcode.image.svg.SvgPathImage)
+#     stream = BytesIO()
+#     img.save(stream)
 
-    headers = {
-        'Content-Type': 'image/svg+xml',
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0'
-    }
+#     headers = {
+#         'Content-Type': 'image/svg+xml',
+#         'Cache-Control': 'no-cache, no-store, must-revalidate',
+#         'Pragma': 'no-cache',
+#         'Expires': '0'
+#     }
 
-    return stream.getvalue(), headers
+#     return stream.getvalue(), headers
 
-@users.route('/tfa')
-def tfa():
-    if 'new_username' not in session:
-        return redirect(url_for('main.index'))
+# @users.route('/tfa')
+# def tfa():
+#     if 'new_username' not in session:
+#         return redirect(url_for('main.index'))
 
-    headers = {
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0'
-    }
-    return render_template('tfa.html'), headers
+#     headers = {
+#         'Cache-Control': 'no-cache, no-store, must-revalidate',
+#         'Pragma': 'no-cache',
+#         'Expires': '0'
+#     }
+#     return render_template('tfa.html'), headers
 
 @users.route('/login', methods=['GET', 'POST'])
 def login():

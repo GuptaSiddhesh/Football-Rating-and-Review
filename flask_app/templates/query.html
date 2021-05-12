@@ -5,21 +5,20 @@
     <p><b>Status Code: {{ error_msg.status_code }}</b></p>
 {% endif %}
 
-<div class="container-fluid">
-    {% for result in results %}
-    <div class="media">
-        <div class="media-body">
-        <h5 class="mt-0">
-            <a href="{{ url_for('football.player_detail', player_id=result.player_id) }}">
-                {{ result.fullname }}
+<div class="container">
+    <h2>Here are you search results:</h2>
+    <p></p>
+    {% for r in results %}
+    <div>
+        <h6>
+            <a href="{{ url_for('football.player_detail', player_id=r.player_id) }}">
+                {{ r.fullname }}
             </a> 
-            ({{ result.pos1 }})
-            ({{ result.pos2 }})
-            ({{ result.cteam }})
-            ({{ result.jnum }})
-            ({{ result.col }})
-        </h5>
-        </div>
+            Position: {{ r.pos1 }} |
+            Shirt Number:{{ r.jnum }} | From: {{ r.col }}
+        </h6>
+        <hr>
+        <p></p>
     </div>
     {% endfor %}
 </div>

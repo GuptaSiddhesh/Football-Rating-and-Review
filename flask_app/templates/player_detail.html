@@ -8,7 +8,6 @@
 
 {% if player %}
 
-{# Display card for the player details #}
 <div class="card-header">
   <h2>{{ player.fullname }} ({{ player.cteam }} #{{player.jnum}})</h2>
 
@@ -41,7 +40,6 @@
 <p></p>
 
   <div class="col">
-    <div class="card text-center">
       <div class="card-body" style="background:#ffffff; border-radius:20px; padding: 40px; border: 4px salmon solid; margin-top: 50px;">
         
         {% for i in player.flags %}
@@ -78,6 +76,7 @@
                 </div>
                 <p></p>
                 <div class="col-sm-4 ">
+                  <p></p>
                   Targets: {{ game.trg }}
                   <br>
                   Receptions: {{ game.rec }}
@@ -105,54 +104,77 @@
                   Draft Kings Fantasy Points: {{ game.fp3 }}
                   <br>
                 </div>
-
-              </div>
-
-    
+                </div>
                 <hr>
                 <p></p>
-          <!-- {% endfor %} -->
-          {% endif %}
-          {% if i == 3 %}
-            <div style="overflow-x:auto">
-            <table>
-              <tr>
-                <th>Season</th>
-                <th>Week Number</th>
-                <th>Team</th>
-                <th>Game ID</th>
-                <th>PATs</th>
-                <th>FG's Made (&lt 40 yds)</40></th>
-                <th>FG's Made (40-49 yds)</th>
-                <th>FG's Made (50+ yds)</th>
-                <th>Fantasy Points</th>
-              </tr>
-              {% for game in player.kicker %}<tr>
-              <tr>  
-                <td>{{ game.year }}</td>
-                <td>{{ game.game }}</td>
-                <td>{{ game.team }}</td>
-                <td>{{ game.gid }}</td>
-                <td>{{ game.pat }}</td>
-                <td>{{ game.fgs }}</td>
-                <td>{{ game.fgm }}</td>
-                <td>{{ game.fgl }}</td>
-                <td>{{ game.fp }}</td>
-              </tr>
               {% endfor %}
-            </table>
+          {% endif %}
+          {% if i == 2 %}
+          {% for game in player.defense %}
+          <div class="row">
+            <h2> Season: {{ game.year }} </h2>
+            <div class="col-sm-4">
+              <br>
+              Week Number: {{ game.game }}
+              <br>
+              Team: {{ game.team }}
+              <br>
+              Game ID: {{ game.gid }}
+              <br>
+              Solo Tackles: {{ game.solo }}
+              <br>
+              Combined Tackles: {{ game.comb }}
+              <br>
+              Sacks: {{ game.sck }}
+              <br>
+              Safeties: {{ game.saf }}
+              <br>
+              Blocks: {{ game.blk }}
+              <br>
+              Interceptions: {{ game.ints }}
+              <br>
+              Passes Defended: {{ game.pdef }}
+              <br>
+              Fumbles recovered: {{ game.frcv }}
+              <br>
+              Fumbles Forced: {{ game.forc }}
+              <br>
             </div>
+            <p></p>
+            <div class="col-sm-4 ">
+              <p></p>
+              Defensive Touchdowns: {{ game.tdd }}
+              <br>
+              Return Yardage: {{ game.rety }}
+              <br>
+              Return TDs: {{ game.tdret }}
+              <br>
+              Penalty Yardage: {{ game.peny }}
+              <br>
+              Snaps: {{ game.ret }}
+              <br>
+              NFL.com Fantasy Points: {{ game.snp }}
+              <br>
+              Fan Duel Fantasy Points: {{ game.fp }}
+              <br>
+              Draft Kings Fantasy Points: {{ game.fp2 }}
+              <br>
+            </div>
+            </div>
+            <hr>
+            <p></p>
+          {% endfor %}
           {% endif %}
         {% endfor %}
       </div>
-    </div>
+    <!-- </div> -->
   </div>
 </div>
 
 {# Reviews #}
 <div class="row">
   <div class="col-md-12">
-    <h1> Reviews <small class="float-right">{{ reviews.count() }} reviews</small></h1>
+    <h2> What People Think About This Player <small class="float-right">{{ reviews.count() }} comments</small></h2>
     <ul class="media-list">
       {% for review in reviews %}
       <li class="media review-item">

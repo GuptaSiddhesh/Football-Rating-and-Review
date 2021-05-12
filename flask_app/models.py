@@ -18,7 +18,7 @@ class User(db.Document, UserMixin):
         return self.username
 
 # Repurpose for fantasy football player reviews (not movies)
-class Review(db.Document):
+class Comments(db.Document):
     commenter = db.ReferenceField(User)
     content = db.StringField(min_length=1, max_length=500, required=True)
     draftRound = db.IntField(required=True)

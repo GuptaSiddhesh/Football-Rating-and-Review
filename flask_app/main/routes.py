@@ -1,22 +1,18 @@
 from flask import render_template, request, redirect, url_for, flash, Response
 from flask import Blueprint
-from ..forms import (SearchTeamForm, SearchPlayerForm)
-from ..models import User, Review
+from ..forms import (SearchForm)
+from ..models import User, Comments
 
 main = Blueprint("main", __name__)
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    form = SearchTeamForm()
-    form2 = SearchPlayerForm()
+    form = SearchForm()
 
     if form.validate_on_submit():
         return redirect(url_for('football.team_results', query=form.search_query.data))
 
-    if form2.validate_on_submit():
-        return redirect(url_for('football.player_results', fname=form2.fname.data, lname=form2.lname.data))
-
-    return render_template('index.html', form = form, form2 = form2)
+    return render_template('index.html', form = form)
 
 @main.route("/about")
 def about():
