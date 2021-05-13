@@ -25,5 +25,5 @@ def how_it_works():
 @main.route('/user/<username>')
 def user_detail(username):
     # Create list of reviews done by the specified user
-    reviews = Review.objects(commenter=User.objects(username=username).first())
+    reviews = Comments.objects(commenter=User.objects(username=username).first())
     return render_template('user_detail.html', username = username, reviews = reviews)
