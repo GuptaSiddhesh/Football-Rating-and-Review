@@ -32,14 +32,12 @@ pymongo==3.10.1
 pyotp==2.6.0
 pyparsing==2.4.7
 PyQt5==5.15.2
-PyQt5-sip==4.19.24
 pytest==6.1.2
 python-dotenv==0.15.0
 qrcode==6.1
 requests==2.24.0
 six==1.14.0
 SQLAlchemy==1.4.14
-TBB==0.1
 toml==0.10.1
 urllib3==1.25.11
 users==1.0.dev0
