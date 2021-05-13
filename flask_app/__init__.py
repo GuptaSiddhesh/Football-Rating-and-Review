@@ -37,5 +37,5 @@ from flask_app.usersInfo.routes import users
 from flask_app.footballInfo.routesFootball import football
 
 app.register_blueprint(main)
-app.register_blueprint(users, url_prefix='/users')
 app.register_blueprint(football)
+app.register_blueprint(users, url_prefix='/users')
