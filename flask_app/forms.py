@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms.validators import (InputRequired, DataRequired, NumberRange, Length, Email,
                                 EqualTo, ValidationError, Optional)
+from wtforms_validators import AlphaNumeric, Alpha
 from wtforms import StringField, IntegerField, SubmitField, TextAreaField, PasswordField, SelectField
 import pyotp
 
@@ -22,19 +23,21 @@ class SearchForm(FlaskForm):
 
 
 class PlayerCommentForm(FlaskForm):
-    text = TextAreaField('Comment', validators=[InputRequired(), Length(min=1, max=500)])
+    text = TextAreaField('Comment', validators=[InputRequired(), Length(min=1, max=500),
+                                                Alpha(message='Comment must contain only alphabets')])
     draftRound = IntegerField('Suggest a Draft Round', validators=[InputRequired(), NumberRange(min=1, max=15,
-                                                                                      message='Draft Round must be between 1 and 15')])
+                                                                    message='Draft Round must be between 1 and 15')])
     rating = IntegerField('Provide a rating between 1-10', validators=[InputRequired(), NumberRange(min=1, max=10,
-                                                                                      message='Rating must be between 1 and 10')])
+                                                                                                    message='Rating must be between 1 and 10')])
     playAgain = SelectField('Would you play this player again?', choices=[('YES', 'Yes'), ('NO', 'No')])
     submit = SubmitField('Submit Review')
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[InputRequired(), Length(min=1, max=40)])
+    username = StringField('Username', validators=[InputRequired(), Length(min=1, max=40),
+                                                   AlphaNumeric(message='Username must contain only alphabets and numbers only')])
     email = StringField('Email', validators=[InputRequired(), Email()])
-    password = PasswordField('Password', validators=[InputRequired()])
+    password = PasswordField('Password', validators=[InputRequired(), Length(min=10, max=20, message="Minimum length 10 for strong password")])
     confirm_password = PasswordField('Confirm Password',
                                      validators=[InputRequired(), EqualTo('password')])
     submit = SubmitField('Sign Up')
@@ -50,7 +53,8 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Email has already been used')
 
 class UpdateUsernameForm(FlaskForm):
-    username = StringField('Username', validators=[InputRequired(), Length(min=1, max=20)])
+    username = StringField('Username', validators=[InputRequired(), Length(min=1, max=20),
+                                                   AlphaNumeric(message='Username must contain only alphabets and numbers only')])
 
     submit = SubmitField('Update Username')
 
