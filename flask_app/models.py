@@ -12,16 +12,15 @@ class User(db.Document, UserMixin):
     username = db.StringField(unique=True, required=True)
     password = db.StringField()
 
-
-    # Returns unique string identifying our object
     def get_id(self):
         return self.username
 
-# Repurpose for fantasy football player reviews (not movies)
+
 class Comments(db.Document):
     commenter = db.ReferenceField(User)
     content = db.StringField(min_length=1, max_length=500, required=True)
     draftRound = db.IntField(required=True)
+    rating = db.IntField()
     playAgain = db.StringField(required=True, min_length=2, max_length=3)
     date = db.StringField(required = True)
     player_name = db.StringField(required = True)

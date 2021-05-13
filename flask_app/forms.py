@@ -15,7 +15,7 @@ class SearchForm(FlaskForm):
                                                 ('HOU', 'Houston Texans'), ('KC', 'Kansas City Chiefs'),
                                                 ('MIN', 'Minnesota Vikings'),
                                                 ('NE', 'New England Patriots'), ('NO', 'New Orleans Saints'),
-                                                ('NYJ', 'New York Jets'), ('PHI', 'Philadelphia Eagles'), ('SEA', 'Seattle Seahawks'),
+                                                ('PHI', 'Philadelphia Eagles'), ('SEA', 'Seattle Seahawks'),
                                                 ('SF', 'San Francisco 49ers'), ('TEN', 'Tennessee Titans'),
                                                 ('ALL', 'All Teams')])
     submit = SubmitField('Search')
@@ -23,9 +23,11 @@ class SearchForm(FlaskForm):
 
 class PlayerCommentForm(FlaskForm):
     text = TextAreaField('Comment', validators=[InputRequired(), Length(min=1, max=500)])
-    draftRound = IntegerField('Draft Round', validators=[InputRequired(), NumberRange(min=1, max=15,
+    draftRound = IntegerField('Suggest a Draft Round', validators=[InputRequired(), NumberRange(min=1, max=15,
                                                                                       message='Draft Round must be between 1 and 15')])
-    playAgain = SelectField('Play Again', choices=[('YES', 'Yes'), ('NO', 'No')])
+    rating = IntegerField('Provide a rating between 1-10', validators=[InputRequired(), NumberRange(min=1, max=10,
+                                                                                      message='Rating must be between 1 and 10')])
+    playAgain = SelectField('Would you play this player again?', choices=[('YES', 'Yes'), ('NO', 'No')])
     submit = SubmitField('Submit Review')
 
 
@@ -47,6 +49,16 @@ class RegistrationForm(FlaskForm):
         if user is not None:
             raise ValidationError('Email has already been used')
 
+class UpdateUsernameForm(FlaskForm):
+    username = StringField('Username', validators=[InputRequired(), Length(min=1, max=20)])
+
+    submit = SubmitField('Update Username')
+
+    def validate_username(self, username):
+        user = User.objects(username=username.data).first()
+        if user is not None:
+            raise ValidationError('Username is taken')
+
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired(), Length(min=1, max=20)])
@@ -61,12 +73,4 @@ class LoginForm(FlaskForm):
 
 
 
-class UpdateUsernameForm(FlaskForm):
-    username = StringField('Username', validators=[InputRequired(), Length(min=1, max=20)])
 
-    submit = SubmitField('Update Username')
-
-    def validate_username(self, username):
-        user = User.objects(username=username.data).first()
-        if user is not None:
-            raise ValidationError('Username is taken')

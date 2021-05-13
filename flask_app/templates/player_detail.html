@@ -44,7 +44,7 @@
         
         
           {% if player.type == 1 %}
-            {% for game in player.offense %}
+            {% for game in player.oStyle %}
               <div class="row">
                 <h2> Season: {{ game.year }} </h2>
                 <div class="col-sm-4">
@@ -110,7 +110,7 @@
               {% endfor %}
           {% endif %}
           {% if player.type == 2 %}
-          {% for game in player.defense %}
+          {% for game in player.dStyle %}
           <div class="row">
             <h2> Season: {{ game.year }} </h2>
             <div class="col-sm-4">
@@ -171,7 +171,6 @@
   </div>
 </div>
 
-{# Reviews #}
 <div class="row">
   <div class="col-md-12">
     <h2> What People Think About This Player <small class="float-right">{{ reviews.count() }} comments</small></h2>
@@ -187,6 +186,7 @@
           </a>
           <br> {{ review.content }}
           <br> <b>Draft Round</b> {{review.draftRound}}
+          <br> <b>Rating</b> {{review.rating}}
           <br> <b>Play again?</b> {{review.playAgain}}
         </div>
       </li>
@@ -223,6 +223,18 @@
           {% endfor %}
         </div>
         {% endif %}
+
+        {{ form.rating.label }}
+        {{ form.rating(class="form-control") }}
+
+        {% if form.rating.errors %}
+        <div class="alert alert-warning" role="alert">
+          {% for error in form.playAgain.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+
 
         {{ form.playAgain.label }}
         {{ form.playAgain(class="form-control") }}
